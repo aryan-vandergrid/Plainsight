@@ -11,6 +11,15 @@ Plainsight puts the protections of a regulated offering on-chain, so that launch
 
 Network: **Ethereum Sepolia** (chainId `11155111`). Built for **ETHGlobal Mumbai 2026**.
 
+| | |
+|---|---|
+| **Live app** | https://plainsight-two.vercel.app |
+| **Partner integrations** | Uniswap (CCA, v4 hook), ENS (ENSv2), Chainlink (CRE) |
+| **Integration references** | [Where to verify each integration](#where-to-verify-each-integration) · [FEEDBACK.md](FEEDBACK.md) |
+| **Deployed contracts** | [Deployed contracts](#deployed-contracts-sepolia) |
+
+**Contents:** [How a launch works](#how-a-launch-works) · [Deployed contracts](#deployed-contracts-sepolia) · [Partner integrations](#partner-integrations) · [Verify each integration](#where-to-verify-each-integration) · [Repository layout](#repository-layout) · [Run it locally](#run-it-locally) · [Testing](#testing) · [Security](#security-notes) · [AI tools](#use-of-ai-tools)
+
 ---
 
 ## How a launch works
@@ -30,6 +39,57 @@ Issuer posts disclosure ──► ENS names every insider wallet ──► 8 on-
 4. **Pool.** `GreenshoeVault` opens a Uniswap v4 pool at the auction's final price, with `PlainsightHook` attached, and places the reserve as a 10-position buy wall.
 5. **Surveillance.** A Chainlink CRE workflow reads flow data on a schedule and writes flags and periodic reports to `FlagRegistry`, which the hook reads.
 6. **Settle.** After 30 days the wall is removed, bought-back tokens are burned and leftover USDC returns to the issuer.
+
+---
+
+## Deployed contracts (Sepolia)
+
+Network: Ethereum Sepolia, chainId `11155111` · Deploy block: `12076365` · ENS parent name: `plainsight.eth`
+
+### Plainsight protocol
+
+| Contract | Role | Address |
+|---|---|---|
+| `Launcher` | Posts disclosures, runs the 8 checks, launches | [`0x0ebc395B33c02A339f440E3a087619FB1C1e172e`](https://sepolia.etherscan.io/address/0x0ebc395B33c02A339f440E3a087619FB1C1e172e) |
+| `ManifestRegistry` | Stores the disclosure | [`0xA127930a4EEB41A72efacffc9358f08246e45CED`](https://sepolia.etherscan.io/address/0xA127930a4EEB41A72efacffc9358f08246e45CED) |
+| `AuctionDeployer` | Creates the Uniswap CCA for each launch | [`0x06138F5139E7c39e62fDe86bC7503E8Cf61A11F9`](https://sepolia.etherscan.io/address/0x06138F5139E7c39e62fDe86bC7503E8Cf61A11F9) |
+| `GreenshoeVault` | Opens the pool, runs the buy wall, settles | [`0xd41a3A2Bb41da6235BeE70fBa67798677860E8f0`](https://sepolia.etherscan.io/address/0xd41a3A2Bb41da6235BeE70fBa67798677860E8f0) |
+| `PlainsightHook` | Uniswap v4 hook | [`0xEC28b1369B53428A962a4b0a6025798Cce43AfC4`](https://sepolia.etherscan.io/address/0xEC28b1369B53428A962a4b0a6025798Cce43AfC4) |
+| `FlagRegistry` | Chainlink CRE receiver, wallet flags and reports | [`0xe5c58941133124139fe38Fc294Df06e292a650A2`](https://sepolia.etherscan.io/address/0xe5c58941133124139fe38Fc294Df06e292a650A2) |
+| `VestingWalletFactory` | Locks insider tokens | [`0xe700131948FF9d05e19834bf89eF77162d0Bb4E1`](https://sepolia.etherscan.io/address/0xe700131948FF9d05e19834bf89eF77162d0Bb4E1) |
+| `TestUSDC` | Test stablecoin used for bidding and trading | [`0x1349A770Cc193840d83ceE2FF4db8F52e2703b88`](https://sepolia.etherscan.io/address/0x1349A770Cc193840d83ceE2FF4db8F52e2703b88) |
+| Demo token `ABC` | Example launch | [`0x3D99Be8a04d9D565936fAa44Ba78537eFB0Ac69e`](https://sepolia.etherscan.io/address/0x3D99Be8a04d9D565936fAa44Ba78537eFB0Ac69e) |
+| Demo token `XYZ` | Example launch | [`0x8368ceb29e95e030eF9224ED450c6Bf47131578B`](https://sepolia.etherscan.io/address/0x8368ceb29e95e030eF9224ED450c6Bf47131578B) |
+
+### Uniswap
+
+| Contract | Address |
+|---|---|
+| CCA Factory v2.1.0 | [`0x000000001F26a0044BaA66024e7b6599c61963F8`](https://sepolia.etherscan.io/address/0x000000001F26a0044BaA66024e7b6599c61963F8) |
+| CCALens | [`0xc3C65F5453A3674aDb693cbdA3C842545cD30f53`](https://sepolia.etherscan.io/address/0xc3C65F5453A3674aDb693cbdA3C842545cD30f53) |
+| Permit2 | [`0x000000000022D473030F116dDEE9F6B43aC78BA3`](https://sepolia.etherscan.io/address/0x000000000022D473030F116dDEE9F6B43aC78BA3) |
+| v4 PoolManager | [`0xE03A1074c86CFeDd5C142C4F04F1a1536e203543`](https://sepolia.etherscan.io/address/0xE03A1074c86CFeDd5C142C4F04F1a1536e203543) |
+| StateView | [`0xE1Dd9c3fA50EDB962E442f60DfBc432e24537E4C`](https://sepolia.etherscan.io/address/0xE1Dd9c3fA50EDB962E442f60DfBc432e24537E4C) |
+| Universal Router | [`0x3A9D48AB9751398BbFa63ad67599Bb04e4BdF98b`](https://sepolia.etherscan.io/address/0x3A9D48AB9751398BbFa63ad67599Bb04e4BdF98b) |
+| v4 Quoter | [`0x61B3f2011A92d183C7dbaDBdA940a7555Ccf9227`](https://sepolia.etherscan.io/address/0x61B3f2011A92d183C7dbaDBdA940a7555Ccf9227) |
+| PoolSwapTest | [`0x9B6b46e2c869aa39918Db7f52f5557FE577B6eEe`](https://sepolia.etherscan.io/address/0x9B6b46e2c869aa39918Db7f52f5557FE577B6eEe) |
+| PoolModifyLiquidityTest | [`0x0C478023803a644c94c4CE1C1e7b9A087e411B0A`](https://sepolia.etherscan.io/address/0x0C478023803a644c94c4CE1C1e7b9A087e411B0A) |
+
+### ENS (ENSv2)
+
+| Contract | Address |
+|---|---|
+| `PlainsightRegistry` (subregistry of `plainsight.eth`) | [`0x1581E3106Db36C9aB34af1A2E80070f672b2cdc5`](https://sepolia.etherscan.io/address/0x1581E3106Db36C9aB34af1A2E80070f672b2cdc5) |
+| `PermissionedResolver` | [`0x4Df4D55743f3932A9Acf3ae550b4f4dDdA3dBEC3`](https://sepolia.etherscan.io/address/0x4Df4D55743f3932A9Acf3ae550b4f4dDdA3dBEC3) |
+| Universal Resolver | [`0xeEeEEEeE14D718C2B47D9923Deab1335E144EeEe`](https://sepolia.etherscan.io/address/0xeEeEEEeE14D718C2B47D9923Deab1335E144EeEe) |
+| ETHRegistry | [`0xD4eBcbBdF463C9c45784603Db0dDD499BC44A8B4`](https://sepolia.etherscan.io/address/0xD4eBcbBdF463C9c45784603Db0dDD499BC44A8B4) |
+| VerifiableFactory | [`0xDa70306C98E97eCe36F997a21368e53298572991`](https://sepolia.etherscan.io/address/0xDa70306C98E97eCe36F997a21368e53298572991) |
+
+### Chainlink CRE evidence
+
+A broadcast simulation of the surveillance workflow published an on-chain report to `FlagRegistry`: [`0x61a8f742…8ff0`](https://sepolia.etherscan.io/tx/0x61a8f7424d7cdaaa8563f6378aa46891224ead459cf3ede37119a7528a158ff0) (block 12078646, status success).
+
+The same addresses are kept in [`docs/DEPLOYMENTS.md`](docs/DEPLOYMENTS.md), `web/lib/addresses.json` and `contracts/addresses.json`.
 
 ---
 
@@ -143,8 +203,11 @@ Prerequisites: [Foundry](https://book.getfoundry.sh/), Node 20+, pnpm, [Bun](htt
 **Contracts**
 
 ```bash
-git submodule update --init --recursive
-cd contracts
+cd contracts && mkdir -p lib && cd lib
+git clone https://github.com/foundry-rs/forge-std && git -C forge-std checkout v1.11.0
+git clone https://github.com/ensdomains/contracts-v2 && git -C contracts-v2 checkout 07e55a056f5b6a9c90119f501bdd05714e67dddd && git -C contracts-v2 submodule update --init --recursive
+git clone --recurse-submodules https://github.com/Uniswap/continuous-clearing-auction && git -C continuous-clearing-auction checkout ce78b4d94cdf94fd41f20afb6f6e495b8b83a234 && git -C continuous-clearing-auction submodule update --init --recursive
+cd ..
 forge build
 forge test --no-match-path 'test/fork/*'                    # unit tests
 forge test --match-path 'test/fork/*' --fork-url $SEPOLIA_RPC_URL   # Sepolia fork tests
