@@ -20,15 +20,34 @@ Stack used: **Continuous Clearing Auction v2.1.0**, **Uniswap v4** (custom hook,
 - **Hook permissions as a first-class concept.** Encoding permissions in the hook address made it easy to verify a deployed hook has exactly the callbacks we intended.
 - **Transient storage in a hook.** It was a clean way to track what a trader bought and sold within one transaction.
 
+## Tools and docs we used
+
+The official Uniswap docs, the CCA and v4 repositories (source and tests), the Uniswap AI skills, and the existing Sepolia deployments of the CCA, v4 and the Universal Router. The docs were clear enough to build from. Where we had to go further, it was into the source, for the two areas below.
+
+## The hardest parts
+
+1. **Getting a CCA into a v4 pool with a custom hook.** There is no documented path for it, so we built the bridge ourselves in the vault. See friction point 2.
+2. **Finding the real trader inside a hook.** The hook sees the router, not the user. See friction point 1.
+
+## Our top request
+
+A direct, documented way for a finished CCA to graduate into a v4 pool that carries a custom hook.
+
 ## Friction and requests
 
 1. **Identifying the real trader in a hook.** A hook sees the router as `sender`. We call the router's `msgSender()` (see [`PlainsightHook.sol#L397`](contracts/src/PlainsightHook.sol#L397)) with a bounded gas `staticcall`, and fall back to treating the router as the trader when it doesn't expose it. Per-wallet hook rules only work if more routers expose `msgSender()`. A standard interface for this would help every hook that needs per-user logic.
 2. **CCA to v4 with a custom hook.** There is no direct path from a finished CCA into a v4 pool that uses a custom hook. We wrote that bridge ourselves in the vault. A documented pattern, or a hook-aware graduation step, would remove a lot of custom code.
 3. **Combining hooks.** A pool has one hook. Permissioned pools decide who can trade, while our hook decides what a clean launch looks like. We'd like a recommended way to combine the two.
-4. **CCA configuration data.** Building the auction parameters (price grid in Q96 and the step schedule) took the most time. We ended up writing helpers ([`priceGrid`](contracts/src/AuctionDeployer.sol#L119), [`schedule`](contracts/src/AuctionDeployer.sol#L127)). A reference builder for common shapes, or worked examples in the docs, would help.
-5. **Testing.** Our unit tests needed local builds of the CCA, Permit2 and v4 (see `contracts/test/utils/`). Official test fixtures for these would save every team the same work.
+4. **CCA configuration data.** The auction parameters (price grid in Q96 and the step schedule) are encoded by hand. We wrote our own helpers ([`priceGrid`](contracts/src/AuctionDeployer.sol#L119), [`schedule`](contracts/src/AuctionDeployer.sol#L127)). A reference builder for common shapes, or worked examples in the docs, would help.
+5. **Testing.** Our unit tests use local builds of the CCA, Permit2 and v4 (see `contracts/test/utils/`). Official test fixtures for these would save every team the same work.
 
 ## Developer experience
 
-- Sepolia deployments for CCA, v4 and the Universal Router were available and stable for our fork tests.
-- Error decoding was harder than it needed to be: bid and swap reverts bubble up from several contracts (Permit2, CCA, token), so we merge their error ABIs on the client ([`abis/index.ts`](web/lib/abis/index.ts)) to show readable messages.
+- Sepolia deployments for CCA, v4 and the Universal Router were available, and our fork tests run against them.
+- Bid and swap reverts bubble up from several contracts (Permit2, CCA, token), so we merge their error ABIs on the client ([`abis/index.ts`](web/lib/abis/index.ts)) to show readable messages.
+
+## Questions we'd like Uniswap to answer
+
+1. Will more routers expose `msgSender()`? It's what makes per-wallet hook rules possible.
+2. Can a CCA graduate straight into a v4 pool that has a custom hook?
+3. Permissioned pools decide who can trade, while our hook decides what a clean launch looks like. A pool has one hook, so what is the recommended way to combine the two?
