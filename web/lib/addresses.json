@@ -1,0 +1,35 @@
+{
+  "chainId": 11155111,
+  "deployBlock": 12076365,
+  "usdc": "0x1349A770Cc193840d83ceE2FF4db8F52e2703b88",
+  "greenshoeVault": "0xd41a3A2Bb41da6235BeE70fBa67798677860E8f0",
+  "plainsightHook": "0xEC28b1369B53428A962a4b0a6025798Cce43AfC4",
+  "flagRegistry": "0xe5c58941133124139fe38Fc294Df06e292a650A2",
+  "v4": {
+    "poolManager": "0xE03A1074c86CFeDd5C142C4F04F1a1536e203543",
+    "stateView": "0xE1Dd9c3fA50EDB962E442f60DfBc432e24537E4C",
+    "swapRouter": "0x9B6b46e2c869aa39918Db7f52f5557FE577B6eEe",
+    "liquidityRouter": "0x0C478023803a644c94c4CE1C1e7b9A087e411B0A",
+    "universalRouter": "0x3A9D48AB9751398BbFa63ad67599Bb04e4BdF98b",
+    "quoter": "0x61B3f2011A92d183C7dbaDBdA940a7555Ccf9227"
+  },
+  "auctionDeployer": "0x06138F5139E7c39e62fDe86bC7503E8Cf61A11F9",
+  "manifestRegistry": "0xA127930a4EEB41A72efacffc9358f08246e45CED",
+  "vestingWalletFactory": "0xe700131948FF9d05e19834bf89eF77162d0Bb4E1",
+  "launcher": "0x0ebc395B33c02A339f440E3a087619FB1C1e172e",
+  "abcToken": "0x3D99Be8a04d9D565936fAa44Ba78537eFB0Ac69e",
+  "xyzToken": "0x8368ceb29e95e030eF9224ED450c6Bf47131578B",
+  "cca": {
+    "factory": "0x000000001F26a0044BaA66024e7b6599c61963F8",
+    "lens": "0xc3C65F5453A3674aDb693cbdA3C842545cD30f53",
+    "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3"
+  },
+  "ens": {
+    "parentName": "plainsight.eth",
+    "ethRegistry": "0xD4eBcbBdF463C9c45784603Db0dDD499BC44A8B4",
+    "plainsightRegistry": "0x1581E3106Db36C9aB34af1A2E80070f672b2cdc5",
+    "resolver": "0x4Df4D55743f3932A9Acf3ae550b4f4dDdA3dBEC3",
+    "verifiableFactory": "0xDa70306C98E97eCe36F997a21368e53298572991",
+    "universalResolver": "0xeEeEEEeE14D718C2B47D9923Deab1335E144EeEe"
+  }
+}

@@ -3,9 +3,9 @@
   "label": "abc",
   "flowTrackUrl": "http://localhost:3000/api/flowtrack/abc",
   "chainSelectorName": "ethereum-testnet-sepolia",
-  "flagRegistry": "0x0000000000000000000000000000000000000000",
-  "hook": "0x0000000000000000000000000000000000000000",
-  "vault": "0x0000000000000000000000000000000000000000",
+  "flagRegistry": "0xe5c58941133124139fe38Fc294Df06e292a650A2",
+  "hook": "0xEC28b1369B53428A962a4b0a6025798Cce43AfC4",
+  "vault": "0xd41a3A2Bb41da6235BeE70fBa67798677860E8f0",
   "gasLimit": "1500000",
   "reportGasLimit": "4000000",
   "reportDays": [
